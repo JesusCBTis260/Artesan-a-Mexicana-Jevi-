@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Artesanía Mexicana Jevi</title>
+    <style>
+        :root {
+            --green: #38cd27;
+            /* verde limón */
+            --bg: #ffffff;
+            --accent: #c64545;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --maxw: 1100px;
+            --wa: #25D366;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #111;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top slogan bar */
+        .topbar {
+            background: var(--green);
+            color: #fff;
+            padding: 8px 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 16px;
+            background: var(--green);
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .container {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            line-height: 1
+        }
+
+        .brand .name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            color: #000000;
+            text-transform: capitalize
+        }
+
+        .brand .tag {
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 9px
+        }
+
+        /* catalog */
+        main {
+            flex: 1;
+            padding: 22px 16px;
+            max-width: var(--maxw);
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .catalog {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .cat-btn {
+            background: #fff;
+            border: 1px solid #e6e6e6;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            transition: transform .12s;
+            min-width: 120px;
+            text-align: center
+        }
+
+        .cat-btn:hover {
+            transform: translateY(-4px)
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 10px
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px
+        }
+
+        .card .title {
+            font-weight: 700;
+            font-size: 15px
+        }
+
+        .card .price {
+            color: var(--green);
+            font-weight: 700
+        }
+
+        /* product modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            padding: 20px
+        }
+
+        .modal.open {
+            display: flex
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 10px;
+            max-width: 760px;
+            width: 100%;
+            overflow: auto;
+            max-height: 90vh;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px
+        }
+
+        .modal .close {
+            position: absolute;
+            right: 18px;
+            top: 18px;
+            background: #fff;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--card-shadow)
+        }
+
+        .meta .name {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px
+        }
+
+        .meta .desc {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 10px
+        }
+
+        .meta .info {
+            font-size: 14px;
+            margin-bottom: 12px
+        }
+
+        .meta .actions {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .btn {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 0;
+            cursor: pointer
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: #fff
+        }
+
+        .btn-ghost {
+            background: #f2f2f2
+        }
+
+        /* floating whatsapp */
+        .wa-float {
+            position: fixed;
+            left: 18px;
+            bottom: 18px;
+            background: var(--wa);
+            color: #fff;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+            z-index: 60;
+            text-decoration: none
+        }
+
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 18px 16px;
+            background: #fafafa
+        }
+
+        .footer .inner {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .socials a {
+            margin-right: 10px;
+            color: #444;
+            text-decoration: none;
+            font-weight: 600
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 13px
+        }
+
+        @media (max-width:720px) {
+            header {
+                padding: 12px 12px
+            }
+
+            .logo img {
+                width: 48px;
+                height: 48px
+            }
+
+            .brand .name {
+                font-size: 16px
+            }
+
+            .brand .tag {
+                font-size: 11px
+            }
+
+            .modal-content {
+                grid-template-columns: 1fr
+            }
+
+            .card img {
+                height: 140px
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))
+            }
+
+            .container {
+                padding: 0 12px
+            }
+        }
+
+        @media (min-width:1200px) {
+            :root {
+                --maxw: 1400px
+            }
+
+            header {
+                padding: 24px 24px
+            }
+
+            .logo img {
+                width: 90px;
+                height: 90px
+            }
+
+            .brand .name {
+                font-size: 24px
+            }
+
+            .brand .tag {
+                font-size: 13px
+            }
+
+            .card img {
+                height: 200px
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <!-- simple svg logo -->
+                <img src="img/Toro.jpeg" alt="Logo Artesanía Mexicana Jevi" width="70" height="70"
+                    style="border-radius:5px;object-fit:cover">
+                <div class="brand">
+                    <div class="name">Artesanía Mexicana Jevi</div>
+
+                    <div class="tag">LO HECHO A MANO ES SINONIMO DE HECHO CON EL CORAZON</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" id="main">
+        <div style="width:100%;">
+            <div style="font-weight:700;margin-bottom:8px">Catálogo</div>
+            <div class="catalog" id="categories">
+                <!-- categories created by JS -->
+            </div>
+
+            <div id="productsArea">
+                <div style="color:#666">Seleccione una categoría para ver los productos.</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="inner">
+            <div class="socials">
+                <a href="https://www.tiktok.com/@artesaniamexicanajevi" target="_blank" rel="noopener">TikTok</a>
+                <a href="https://www.instagram.com/artesaniamexicanajevi?utm_source=qr&igsh=bGN6eDEwNG1wczZk"
+                    target="_blank" rel="noopener">Instagram</a>
+                <a href="https://www.facebook.com/share/1HE2YuuMWC/" target="_blank" rel="noopener">Facebook</a>
+                <a href="mailto:artesaniamexicanajevi@gmail.com">Artesanía Mexicana Jevi Correo</a>
+            </div>
+            <div class="copyright">Derechos reservados a Artesanía Mexicana Jevi</div>
+            <div> Artesanía Mexicana Jevi © 2025</div>
+        </div>
+    </footer>
+
+    <!-- floating WhatsApp -->
+    <a id="waFloat" class="wa-float" title="WhatsApp" target="_blank" rel="noopener noreferrer" href="#">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M20.5 3.5A11 11 0 0 0 3.5 20.5l-1 4 4-1A11 11 0 0 0 20.5 3.5z" fill="#fff" opacity="0.12" />
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.149-.672.15-.198.297-.768.966-.942 1.164-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.151-.173.198-.297.298-.495.099-.198.05-.372-.025-.52-.074-.148-.672-1.618-.92-2.219-.242-.582-.487-.503-.672-.512l-.572-.01c-.198 0-.52.074-.793.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.487 0 0 .373.157.672.074.298-.082 1.758-.719 2.006-1.413.248-.695.248-1.289.173-1.413-.074-.124-.273-.198-.57-.347z"
+                fill="#fff" />
+        </svg>
+    </a>
+
+    <!-- product modal -->
+    <div id="modal" class="modal" aria-hidden>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div>
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="meta">
+                <div id="modalTitle" class="name"></div>
+                <div id="modalDesc" class="desc"></div>
+                <div id="modalSize" class="info"></div>
+                <div id="modalPrice" class="info" style="font-weight:800;color:var(--green);font-size:18px"></div>
+                <div class="actions">
+                    <a id="modalWa" class="btn btn-primary" href="#" target="_blank" rel="noopener">Me interesa
+                        (WhatsApp)</a>
+                    <button class="btn btn-ghost" id="closeModal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+        <button class="close" id="modalCloseBtn" title="Cerrar">✕</button>
+    </div>
+
+    <script>
+        // Datos de muestra: nombre, categoría, price, size, description, image (placeholder)
+        const products = [
+            // Crochet
+            { id: 11, cat: 'Peluche', name: 'Peluche Oso', price: '$', size: 'cm', desc: '', img: 'img/producto1.jpeg' },
+            { id: 12, cat: 'Peluche', name: 'Peluche Toro', price: '$', size: 'cm', desc: '', img: 'img/producto2.jpeg' },
+            { id: 13, cat: 'Peluche', name: 'Peluche Vaca', price: '$', size: 'cm', desc: '', img: 'img/producto3.jpeg' },
+            //Amigurumi
+            { id: 21, cat: 'Amigurumi', name: 'Muñeca Monster High', price: '$', size: 'cm', desc: '', img: 'img/producto4.jpeg' },
+            { id: 22, cat: 'Amigurumi', name: 'Muñeca de Girasol', price: '$', size: 'cm', desc: '', img: 'img/producto5.jpeg' },
+            { id: 23, cat: 'Amigurumi', name: 'Muñeco de Girasol', price: '$', size: 'cm', desc: '', img: 'img/producto6.jpeg' },
+            { id: 24, cat: 'Amigurumi', name: 'Rosario San Judas Tadeo', price: '$', size: 'cm', desc: '', img: 'img/producto7.jpeg' },
+            { id: 25, cat: 'Amigurumi', name: 'Amigurumi', price: '$', size: 'cm', desc: '', img: 'img/producto8.jpeg' },
+            { id: 26, cat: 'Amigurumi', name: 'Amigurumi', price: '$', size: 'cm', desc: '', img: 'img/producto9.jpeg' },
+            { id: 27, cat: 'Amigurumi', name: 'Amigurumi', price: '$', size: 'cm', desc: '', img: 'img/producto10.jpeg' },
+            // Laveros
+            { id: 31, cat: 'Llavero', name: 'Llavero de Huskerdust', price: '$', size: 'cm', desc: '', img: 'img/producto11.jpeg' },
+            { id: 32, cat: 'Llavero', name: 'Llavero de Mafalda', price: '$', size: 'cm', desc: '', img: 'img/producto12.jpeg' },
+            { id: 33, cat: 'Llavero', name: 'Llavero Rana', price: '$', size: 'cm', desc: '', img: 'img/producto13.jpeg' },
+            { id: 34, cat: 'Llavero', name: 'Llavero Diente', price: '$', size: 'cm', desc: '', img: 'img/producto14.jpeg' },
+            { id: 35, cat: 'Llavero', name: 'Llavero Calavera', price: '$', size: 'cm', desc: '', img: 'img/producto15.jpeg' },
+            // Bolsas
+            { id: 41, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto16.jpeg' },
+            { id: 42, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto17.jpeg' },
+            { id: 43, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto18.jpeg' },
+            { id: 44, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto19.jpeg' },
+            { id: 45, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto20.jpeg' },
+            { id: 46, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto21.jpeg' },
+            { id: 47, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto22.jpeg' },
+            { id: 48, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto23.jpeg' },
+            { id: 49, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto24.jpeg' },
+            { id: 410, cat: 'Bolsas', name: 'Bolsa ', price: '$', size: 'cm', desc: '', img: 'img/producto25.jpeg' },
+            { id: 411, cat: 'Bolsas', name: 'Bolsa', price: '$', size: 'cm', desc: '', img: 'img/producto28.jpeg' },
+            { id: 412, cat: 'Bolsas', name: 'Bolsa', price: '$', size: 'cm', desc: '', img: 'img/producto29.jpeg' },
+            // Mariconeras
+            { id: 51, cat: 'Mariconeras', name: 'Mariconera', price: '$', size: 'cm', desc: '', img: 'img/producto26.jpeg' },
+            { id: 52, cat: 'Mariconeras', name: 'Mariconera', price: '$', size: 'cm', desc: '', img: 'img/producto27.jpeg' },
+            { id: 53, cat: 'Mariconeras', name: 'Mariconera', price: '$', size: 'cm', desc: '', img: 'img/producto231.jpeg' },
+            // Lapiceras
+            { id: 61, cat: 'Lapiceras', name: 'Lapicero', price: '$', size: 'cm', desc: '', img: 'img/producto30.jpeg' },
+            { id: 62, cat: 'Lapiceras', name: 'Lapicero', price: '$', size: 'cm', desc: '', img: 'img/producto32.jpeg' },
+            // Monederos
+            { id: 71, cat: 'Monederos', name: 'Monedero', price: '$', size: 'cm', desc: '', img: 'img/producto33.jpeg' },
+            { id: 72, cat: 'Monederos', name: 'Monedero', price: '$', size: 'cm', desc: '', img: 'img/producto34.jpeg' },
+            // Pulseras
+            { id: 81, cat: 'Pulseras', name: 'Pulsera ', price: '$', size: '', desc: '', img: 'img/producto35.jpeg' },
+            // Ropón
+            { id: 91, cat: 'Ropón', name: 'Ropon Conjunto ', price: '$', size: '', desc: '', img: 'img/producto36.jpeg' },
+            { id: 92, cat: 'Ropón', name: 'Ropon Conjunto ', price: '$', size: '', desc: '', img: 'img/producto37.jpeg' },
+        ];
+
+        const categories = [...new Set(products.map(p => p.cat))];
+
+        const categoriesEl = document.getElementById('categories');
+        const productsArea = document.getElementById('productsArea');
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalSize = document.getElementById('modalSize');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalWa = document.getElementById('modalWa');
+        const closeModal = document.getElementById('closeModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const waFloat = document.getElementById('waFloat');
+
+        // Número de WhatsApp (se usa prefijo internacional mx = 52)
+        const WA_NUMBER = '522227570676';
+
+        // Crear botones de categoría
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'cat-btn';
+            btn.textContent = cat;
+            btn.addEventListener('click', () => showCategory(cat));
+            categoriesEl.appendChild(btn);
+        });
+
+        function showCategory(cat) {
+            const list = products.filter(p => p.cat === cat);
+            const grid = document.createElement('div');
+            grid.className = 'products';
+            list.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-id', p.id);
+                card.innerHTML = `
+                    <img src="${p.img}" alt="${p.name}">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <div style="flex:1">
+                            <div class="title">${p.name}</div>
+                            <div style="font-size:13px;color:#666">${p.size}</div>
+                        </div>
+                        <div class="price">${p.price}</div>
+                    </div>
+                `;
+                card.addEventListener('click', () => openProduct(p.id));
+                grid.appendChild(card);
+            });
+            productsArea.innerHTML = '';
+            productsArea.appendChild(grid);
+        }
+
+        function openProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            modalImage.src = p.img;
+            modalImage.alt = p.name;
+            modalTitle.textContent = p.name;
+            modalDesc.textContent = p.desc;
+            modalSize.textContent = 'Tamaño: ' + p.size;
+            modalPrice.textContent = p.price;
+
+            // WhatsApp link with predefined message including name and image url
+            const text = `Me interesa este producto: ${p.name}`;
+            modalWa.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeProductModal() {
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+
+        // close handlers
+        closeModal.addEventListener('click', closeProductModal);
+        modalCloseBtn.addEventListener('click', closeProductModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeProductModal();
+        });
+
+        // Floating WhatsApp button link (general contact)
+        const waText = encodeURIComponent('Hola, me interesa recibir información.');
+        waFloat.href = `https://wa.me/${WA_NUMBER}?text=${waText}`;
+
+        // Accessibility: close modal with Esc
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeProductModal();
+        });
+
+        // Initial: show first category automatically
+        if (categories.length) showCategory(categories[0]);
+    </script>
+</body>
+
+</html>
